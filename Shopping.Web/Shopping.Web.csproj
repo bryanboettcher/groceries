@@ -99,6 +99,7 @@
     <Content Include="app\lib\jasmine-2.8.0\jasmine_favicon.png" />
     <Content Include="app\SpecRunner.html" />
     <Content Include="app\spec\shopping.js" />
+    <Content Include="app\styles.css" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
