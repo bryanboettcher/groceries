@@ -16,4 +16,6 @@ function greetingService() {
 
 function helloWorldControllerFunction($scope, GreetingService) {
     $scope.greeting = GreetingService.getGreeting();
+    GreetingService.doVoidMethodThingy();
+    //$scope.greeting = 'hi';
 }

@@ -90,6 +90,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\groceries.js" />
+    <Content Include="app\lib\jasmine-2.8.0\boot.js" />
+    <Content Include="app\lib\jasmine-2.8.0\console.js" />
+    <Content Include="app\lib\jasmine-2.8.0\jasmine-html.js" />
+    <Content Include="app\lib\jasmine-2.8.0\jasmine.css" />
+    <Content Include="app\lib\jasmine-2.8.0\jasmine.js" />
+    <Content Include="app\lib\jasmine-2.8.0\jasmine_favicon.png" />
+    <Content Include="app\SpecRunner.html" />
+    <Content Include="app\spec\groceries.js" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -113,6 +121,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="app\src\" />
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
   </ItemGroup>
