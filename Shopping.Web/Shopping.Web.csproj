@@ -89,7 +89,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app\groceries.js" />
+    <Content Include="app\shopping-angular.js" />
+    <Content Include="app\shopping.js" />
     <Content Include="app\lib\jasmine-2.8.0\boot.js" />
     <Content Include="app\lib\jasmine-2.8.0\console.js" />
     <Content Include="app\lib\jasmine-2.8.0\jasmine-html.js" />
@@ -97,7 +98,7 @@
     <Content Include="app\lib\jasmine-2.8.0\jasmine.js" />
     <Content Include="app\lib\jasmine-2.8.0\jasmine_favicon.png" />
     <Content Include="app\SpecRunner.html" />
-    <Content Include="app\spec\groceries.js" />
+    <Content Include="app\spec\shopping.js" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
