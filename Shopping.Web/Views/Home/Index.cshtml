@@ -15,20 +15,27 @@
         <div id="main" class="container clear-top" ng-controller="ShoppingController">
             <table>
                 <tr ng-repeat="item in items">
-                    <td><input type="text" ng-bind="item.name"/></td>
-                    <td><input type="text" ng-bind="item.quantity"/></td>
-                    <td><button ng-click="removeItem(item.name)">remove</button></td>
+                    <td><span ng-bind="item.name"></span></td>
+                    <td><span ng-bind="item.quantity"></span></td>
+                    <td><button ng-click="removeItem(item.name)" ng-bind="webtext.remove"></button></td>
+                    <td><button ng-click="purchaseItem(item.name)" ng-bind="webtext.purchase"></button></td>
                 </tr>
                 
                 <tr>
-                    <td><input type="text" ng-bind="newname"/></td>
-                    <td><input type="text" ng-bind="newquantity"/></td>
-                    <td><button ng-click="addItem(newname, newquantity)">add</button></td>
+                    <td><input type="text" ng-model="newname"/></td>
+                    <td><input type="text" ng-model="newquantity"/></td>
+                    <td><button ng-click="addItemFromPage()" ng-bind="webtext.add"></button></td>
+                    <td></td>
                 </tr>
             </table>
             
-            Total items: <span ng-bind="totalItems"></span>
+            Items remaining: <span ng-bind="items.length"></span>
             
+            <ul>
+                <li ng-repeat="item in cart">
+                    <span ng-bind="item.name"></span>
+                </li>
+            </ul>
         </div>
     </div>
     <footer>
