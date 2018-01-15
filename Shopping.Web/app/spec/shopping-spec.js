@@ -1,16 +1,29 @@
 ﻿describe('Shopping Controller', function() {
 
-    var subject, scope;
+    var
+        subject,
+        scope,
+        persistenceService;
 
     beforeEach(function() {
         scope = {};
-        subject = new shoppingController(scope);
+
+        persistenceService = {
+            save: function (data) {},
+            load: function () { return [
+                    { name: 'our item', quantity: 2 },
+                    { name: 'your item', quantity: 4 }
+                ];
+            }
+        };
+
+        subject = new shoppingController(scope, persistenceService);
     });
 
     describe(' :: When loading the controller', function() {
         
         it('Should create an empty items array', function() {
-            expect(scope.items).not.toBeNull();
+            expect(scope.shoppingList).not.toBeNull();
         });
 
         it('Should initialize the newname property', function() {
@@ -27,15 +40,15 @@
             });
 
             it('Should add a single item', function () {
-                expect(scope.items.length).toBe(1);
+                expect(scope.shoppingList.length).toBe(1);
             });
 
             it('Should add the right name', function () {
-                expect(scope.items[0].name).toBe('my item');
+                expect(scope.shoppingList[0].name).toBe('my item');
             });
 
             it('Should add the right quantity', function () {
-                expect(scope.items[0].quantity).toBe(3);
+                expect(scope.shoppingList[0].quantity).toBe(3);
             });
 
             describe(' :: When adding a duplicate item', function() {
@@ -44,11 +57,11 @@
                 });
 
                 it('Should not add a new item', function() {
-                    expect(scope.items.length).toBe(1);
+                    expect(scope.shoppingList.length).toBe(1);
                 });
 
                 it('Should update the existing item', function() {
-                    expect(scope.items[0].quantity).toBe(5);
+                    expect(scope.shoppingList[0].quantity).toBe(5);
                 });
             });
 
@@ -58,15 +71,15 @@
                 });
 
                 it('Should not add a new item', function () {
-                    expect(scope.items.length).toBe(1);
+                    expect(scope.shoppingList.length).toBe(1);
                 });
 
                 it('Should not change the existing item', function () {
-                    expect(scope.items[0].name).toBe('my item');
+                    expect(scope.shoppingList[0].name).toBe('my item');
                 });
 
                 it('Should update the existing item', function () {
-                    expect(scope.items[0].quantity).toBe(4);
+                    expect(scope.shoppingList[0].quantity).toBe(4);
                 });
             });
 
@@ -76,7 +89,7 @@
                 });
 
                 it('Should remove the item', function () {
-                    expect(scope.items.length).toBe(0);
+                    expect(scope.shoppingList.length).toBe(0);
                 });
             });
 
@@ -86,7 +99,7 @@
                 });
 
                 it('Should remove the item', function () {
-                    expect(scope.items.length).toBe(0);
+                    expect(scope.shoppingList.length).toBe(0);
                 });
             });
 
@@ -96,7 +109,7 @@
                 });
 
                 it('Should not remove the item', function() {
-                    expect(scope.items.length).toBe(1);
+                    expect(scope.shoppingList.length).toBe(1);
                 });
             });
         });
@@ -107,7 +120,7 @@
             });
 
             it('Should not add the item', function() {
-                expect(scope.items.length).toBe(0);
+                expect(scope.shoppingList.length).toBe(0);
             });
         });
 
@@ -117,7 +130,7 @@
             });
 
             it('Should not add the item', function () {
-                expect(scope.items.length).toBe(0);
+                expect(scope.shoppingList.length).toBe(0);
             });
         });
 
@@ -127,7 +140,7 @@
             });
 
             it('Should not add the item', function () {
-                expect(scope.items.length).toBe(0);
+                expect(scope.shoppingList.length).toBe(0);
             });
         });
 
@@ -137,11 +150,11 @@
             });
 
             it('Should add the item', function () {
-                expect(scope.items.length).toBe(1);
+                expect(scope.shoppingList.length).toBe(1);
             });
 
             it('Should fix the whitespace', function () {
-                expect(scope.items[0].name).toBe('spacey name');
+                expect(scope.shoppingList[0].name).toBe('spacey name');
             });
 
             describe(' :: When adding second item with whitespace in the name', function() {
@@ -150,18 +163,69 @@
                 });
 
                 it('Should not add the item', function () {
-                    expect(scope.items.length).toBe(1);
+                    expect(scope.shoppingList.length).toBe(1);
                 });
 
                 it('Should not rename the item', function () {
-                    expect(scope.items[0].name).toBe('spacey name');
+                    expect(scope.shoppingList[0].name).toBe('spacey name');
                 });
 
                 it('Should update the quantity', function () {
-                    expect(scope.items[0].quantity).toBe(2);
+                    expect(scope.shoppingList[0].quantity).toBe(2);
+                });
+            });
+        });
+
+        describe(' :: When moving items to cart', function() {
+            beforeEach(function() {
+                scope.addItem('my item', 3);
+                scope.purchaseItem('my item');
+            });
+
+            it('Should move the item to the cart', function() {
+                expect(scope.cart[0].name).toBe('my item');
+            });
+
+            it('Should remove the item from the list', function() {
+                expect(scope.shoppingList.length).toBe(0);
+            });
+
+            describe(' :: When re-adding the item to the list', function() {
+                beforeEach(function() {
+                    scope.addItem('my item', 4);
+                });
+
+                it('Should not add the item', function() {
+                    expect(scope.shoppingList.length).toBe(0);
                 });
             });
         });
     });
 
+    describe(' :: When loading from persistance', function() {
+        beforeEach(function() {
+            scope.addItem('my item', 3);
+            scope.loadFromPersistence();
+        });
+
+        it('Should replace the list', function() {
+            expect(scope.shoppingList.length).toBe(2);
+        });
+
+        it('Should change the first items name', function() {
+            expect(scope.shoppingList[0].name).toBe('our item');
+        });
+
+        it('Should change the first items quantity', function () {
+            expect(scope.shoppingList[0].quantity).toBe(2);
+        });
+
+        it('Should change the second items name', function () {
+            expect(scope.shoppingList[1].name).toBe('your item');
+        });
+
+        it('Should change the second items quantity', function () {
+            expect(scope.shoppingList[1].quantity).toBe(4);
+        });
+    });
 });

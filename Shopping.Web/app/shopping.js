@@ -1,14 +1,15 @@
 ﻿'use strict';
 
-function shoppingController($scope) {
+function shoppingController($scope, PersistenceService) {
 
-    $scope.items = [];
+    $scope.shoppingList = [];
     $scope.cart = [];
 
     $scope.webtext = {
         add: 'Add',
         remove: 'Remove',
-        purchase: 'Move to cart'
+        purchase: 'Move to cart',
+        load: 'Update from server'
     };
 
     $scope.newname = '';
@@ -29,11 +30,17 @@ function shoppingController($scope) {
         if (!name) return;
         if (!quantity) return;
 
-        let list = $scope.items;
-
+        let list = $scope.shoppingList;
         for (let i = 0; i < list.length; i++) {
             if (list[i].name.toLowerCase() === name.toLowerCase()) {
                 list[i].quantity = quantity;
+                return;
+            }
+        }
+
+        let cart = $scope.cart;
+        for (let i = 0; i < cart.length; i++) {
+            if (cart[i].name.toLowerCase() === name.toLowerCase()) {
                 return;
             }
         }
@@ -47,9 +54,9 @@ function shoppingController($scope) {
     $scope.removeItem = function (name) {
 
         let index;
-        for (index = 0; index < $scope.items.length; index++) {
-            if ($scope.items[index].name.toLowerCase() === name.toLowerCase()) {
-                $scope.items.splice(index, 1);
+        for (index = 0; index < $scope.shoppingList.length; index++) {
+            if ($scope.shoppingList[index].name.toLowerCase() === name.toLowerCase()) {
+                $scope.shoppingList.splice(index, 1);
                 return;
             }
         }
@@ -58,7 +65,7 @@ function shoppingController($scope) {
     $scope.purchaseItem = function(name) {
 
         let item = undefined;
-        let list = $scope.items;
+        let list = $scope.shoppingList;
 
         for (let i = 0; i < list.length; i++) {
             if (list[i].name === name) {
@@ -74,4 +81,7 @@ function shoppingController($scope) {
         $scope.removeItem(name);
     }
 
+    $scope.loadFromPersistence = function() {
+        $scope.shoppingList = PersistenceService.load();
+    }
 }

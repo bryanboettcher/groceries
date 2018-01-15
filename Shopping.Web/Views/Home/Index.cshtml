@@ -8,19 +8,22 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
 
     <script src="/app/shopping.js"></script>
+    <script src="/app/services/persistence.js"></script>
     <script src="/app/shopping-angular.js"></script>
 </head>
 <body ng-app="ShoppingApp">
     <div id="wrap">
         <div id="main" class="container clear-top" ng-controller="ShoppingController">
+            <button ng-click="loadFromPersistence()" ng-bind="webtext.load"></button>
+
             <table>
-                <tr ng-repeat="item in items">
+                <tr ng-repeat="item in shoppingList">
                     <td><span ng-bind="item.name"></span></td>
                     <td><span ng-bind="item.quantity"></span></td>
                     <td><button ng-click="removeItem(item.name)" ng-bind="webtext.remove"></button></td>
                     <td><button ng-click="purchaseItem(item.name)" ng-bind="webtext.purchase"></button></td>
                 </tr>
-                
+
                 <tr>
                     <td><input type="text" ng-model="newname"/></td>
                     <td><input type="text" ng-model="newquantity"/></td>
@@ -28,9 +31,9 @@
                     <td></td>
                 </tr>
             </table>
-            
-            Items remaining: <span ng-bind="items.length"></span>
-            
+
+            Items remaining: <span ng-bind="shoppingList.length"></span>
+
             <ul>
                 <li ng-repeat="item in cart">
                     <span ng-bind="item.name"></span>
